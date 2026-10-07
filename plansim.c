@@ -5,8 +5,8 @@ typedef struct{
 	Vector3 position;
 	Vector3 velocity;
 	Vector3 acceleration;
-	int radius;
-	int mass;
+	float radius;
+	float mass;
 } Planet;
 
 int main(){

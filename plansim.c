@@ -10,5 +10,5 @@ typedef struct{
 } Planet;
 
 int main(){
-	Planet plan_list[] = [];
+	Planet plan_list[] = {};
 }

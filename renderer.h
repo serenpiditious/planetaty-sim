@@ -1,10 +1,14 @@
-#pragma once
-#include <raylib.h>
-#include "simulation.h"
+#include "raylib.h"
+#include "renderer.h"
 
-typedef struct {
-	Planet *planets;
-	
-}SimState;
+void render(SimState state){
+    ClearBackground(BLACK);
 
-int render(SimState state);
+    BeginMode3D(state.camera);
+        Planet *planet = state.planets;
+        for (int i = 0; i < state.planet_num; i++){
+            DrawSphereWires(planet -> position, planet -> radius, 25, 25, RED);
+            planet += 1;
+        }
+    EndMode3D();
+}

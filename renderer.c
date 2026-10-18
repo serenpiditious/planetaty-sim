@@ -1,13 +1,14 @@
-#pragma once
-#include <raylib.h>
+#include "raylib.h"
 #include "renderer.h"
 
-int render(SimState state){
+void render(SimState state){
+    ClearBackground(BLACK);
 
-	ClearBackground(BLACK);
-	BeginDrawing();
-		DrawRectangle(50,50,5,5,WHITE);	
-	EndDrawing();	
-
-	return 0;
+    BeginMode3D(state.camera);
+        Planet *planet = state.planets;
+        for (int i = 0; i < state.planet_num; i++){
+            DrawSphereWires(planet -> position, planet -> radius, 25, 25, RED);
+            planet += 1;
+        }
+    EndMode3D();
 }

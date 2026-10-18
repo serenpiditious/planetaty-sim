@@ -1,2 +1,2 @@
 # planetaty-sim
-A planetary sim of newtonian gravity using lagrangian mechanics  made with c and raylib
+A planetary sim of newtonian gravity made with c and raylib

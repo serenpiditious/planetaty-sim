@@ -1,0 +1,29 @@
+#pragma once
+
+#include <math.h>
+#include <raylib.h>
+
+#define G 200
+
+typedef struct{
+	Vector3 position;
+	Vector3 velocity;
+	Vector3 acceleration;
+	float radius;
+	float mass;
+} Planet;
+
+typedef struct{
+    int planet_num;
+    Planet *planets;
+    float deltaTime;
+    Camera3D camera;
+} SimState;
+
+Vector3 scaleAndAdd(Vector3 vec, Vector3 dir, float scale);
+float collision_vel(float u_pro, float u_bono, float mass_pro, float mass_bono, float e);
+void update_acc(Planet* planet_ptr, Planet* planets, int planet_num);
+void update_pos_vel(Planet* planet_ptr, float deltaTime);
+void collision(Planet *pro, Planet *bono, float e);
+
+void physics(SimState state, float e);

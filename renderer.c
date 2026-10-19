@@ -5,12 +5,22 @@
 
 // moves camera
 void cam_update(Camera3D *camera){
-    float del_theta = DELTA_THETA * DEG_TO_RAD;
+    float del_theta = DELTA_THETA * DEG2RAD;
     Vector3 perp;
-    Quaternion rotator = {1.0f, 0.0f, 0.0f, 0.0f};
-    Quaternion del_rot;
+    float pitch = 0.0f;
+    float yaw = 0.0f;
+    float roll = 0.0f;
+    Quaternion rotator;
     Vector3 cam_dir = Vector3Normalize(Vector3Subtract(camera->target, camera->position));
     Vector3 cam_right = Vector3CrossProduct(cam_dir, camera->up);
+
+    // rotations
+    if (IsKeyDown(KEY_UP) || GetMouseDelta().y > 0) pitch -= del_theta;
+    if (IsKeyDown(KEY_DOWN) || GetMouseDelta().y < 0) pitch += del_theta;
+    if (IsKeyDown(KEY_RIGHT) || GetMouseDelta().x > 0) yaw -= del_theta;
+    if (IsKeyDown(KEY_LEFT) || GetMouseDelta().x < 0) yaw += del_theta;
+    if (IsKeyDown(KEY_E)) roll -= del_theta;
+    if (IsKeyDown(KEY_Q)) roll += del_theta;
 
     // movement
     Vector3 del_pos = {0.0f, 0.0f, 0.0f};
@@ -32,6 +42,10 @@ void cam_update(Camera3D *camera){
     if (IsKeyDown(KEY_LEFT_SHIFT)){
         del_pos = Vector3Add(del_pos, Vector3Scale(camera->up, -DELTA_POS));
     }
+
+    rotator = QuaternionFromEuler(pitch, yaw, roll);
+    cam_dir = Vector3RotateByQuaternion(cam_dir, rotator);
+    camera->up = Vector3RotateByQuaternion(camera->up, rotator);
     camera->position = Vector3Add(camera->position, del_pos);
     camera->target = Vector3Add(camera->position, cam_dir);
 }

@@ -19,8 +19,8 @@ void cam_update(Camera3D *camera){
     if (IsKeyDown(KEY_DOWN) || GetMouseDelta().y < 0) pitch += del_theta;
     if (IsKeyDown(KEY_RIGHT) || GetMouseDelta().x > 0) yaw -= del_theta;
     if (IsKeyDown(KEY_LEFT) || GetMouseDelta().x < 0) yaw += del_theta;
-    if (IsKeyDown(KEY_E)) roll -= del_theta;
-    if (IsKeyDown(KEY_Q)) roll += del_theta;
+    if (IsKeyDown(KEY_E)) roll += del_theta;
+    if (IsKeyDown(KEY_Q)) roll -= del_theta;
 
     // movement
     Vector3 del_pos = {0.0f, 0.0f, 0.0f};
@@ -48,6 +48,11 @@ void cam_update(Camera3D *camera){
     camera->up = Vector3RotateByQuaternion(camera->up, rotator);
     camera->position = Vector3Add(camera->position, del_pos);
     camera->target = Vector3Add(camera->position, cam_dir);
+
+    if (IsKeyDown(KEY_R)) {
+        camera->up = (Vector3) {0.0f, 1.0f, 0.0f};
+        camera->target.z = 0.0f;
+    }
 }
 
 // renders all planets

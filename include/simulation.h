@@ -26,4 +26,4 @@ void update_acc(Planet* planet_ptr, Planet* planets, int planet_num);
 void update_pos_vel(Planet* planet_ptr, float deltaTime);
 void collision(Planet *pro, Planet *bono, float e);
 
-void physics(SimState state, float e);
+void physics(SimState *state, float e);

@@ -1,4 +1,3 @@
-// TODO: camera - S
 // TODO: energy conservation
 // TODO: units - S/L
 // TODO: isStationary - S/L

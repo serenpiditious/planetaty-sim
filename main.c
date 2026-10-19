@@ -52,7 +52,7 @@ int main(){
 	SimState state;
 	while (!WindowShouldClose()){
 		float deltaTime = GetFrameTime();
-		camera.target = planets[2].position;
+		UpdateCamera(&camera, CAMERA_FREE);
 
 		state.camera = camera;
 		state.planets = planets;

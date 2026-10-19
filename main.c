@@ -1,3 +1,9 @@
+// TODO: camera
+// TODO: GUI
+// TODO: Skybox
+// TODO: Trail
+// TODO: textures
+
 #include <stdio.h>
 #include <math.h>
 

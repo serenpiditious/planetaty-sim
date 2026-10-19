@@ -1,8 +1,10 @@
-// TODO: camera
-// TODO: GUI
-// TODO: Skybox
-// TODO: Trail
-// TODO: textures
+// TODO: camera - S
+// TODO: units - S/L
+// TODO: isStationary - S/L
+// TODO: GUI - S
+// TODO: Skybox - S
+// TODO: Trail - L
+// TODO: textures - S/L
 
 #include <stdio.h>
 #include <math.h>

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <raylib.h>
+#include <rlgl.h>
 #include "simulation.h"
 
 #define DELTA_THETA 180.0f

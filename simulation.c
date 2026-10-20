@@ -23,6 +23,7 @@ void update_acc(Planet* curr_planet, Planet* planets, int planet_num){
     Planet planet;
     Vector3 dir_vector;
     float dist;
+    float min_dist;
     float force;
     Vector3 acc = (Vector3) {0.0f, 0.0f, 0.0f};
     for (int i = 0; i < planet_num; i++){
@@ -31,7 +32,15 @@ void update_acc(Planet* curr_planet, Planet* planets, int planet_num){
             // points from curr_planet to planet
             dir_vector = Vector3Subtract(planet.position, curr_planet -> position);
             dist = Vector3Length(dir_vector);
-            force = (G * planet.mass) / (dist * dist);
+            min_dist = curr_planet->radius + planet.radius;
+            if (min_dist > dist){
+                force = K * (dist - min_dist);
+            }
+            else if (min_dist == dist){
+                force = 0;
+            } else{
+                force = (G * planet.mass) / (dist * dist);
+            }
             acc = scaleAndAdd(acc, Vector3Normalize(dir_vector), force);
         }
     }
@@ -48,7 +57,8 @@ void update_pos_vel(Planet* planet, float deltaTime){
 void collision(Planet *pro, Planet *bono, float e){
     // points from pro to bono
     Vector3 unit_dir = Vector3Normalize(Vector3Subtract(bono->position, pro->position));
-    bono->position = scaleAndAdd(pro->position, unit_dir, pro->radius + bono->radius);
+    float min_dist = pro->radius + bono->radius;
+    // bono->position = scaleAndAdd(pro->position, unit_dir, pro->radius + bono->radius);
 
     // velocity along normal
     float u_pro = Vector3DotProduct(pro->velocity, unit_dir);
@@ -74,28 +84,25 @@ void physics(SimState *state, float e){
 
     for (int i = 0; i < state->planet_num; i++){
         Planet *curr_planet = planets + i;
-	if(!curr_planet->isStationary){
-        	update_acc(curr_planet, planets, planet_num);
-	}
-        // printf("%f,%f,%f",plan_list[i].velocity.x, plan_list[i].velocity.y, plan_list[i].velocity.z);
-    }
+        if(!curr_planet->isStationary){
+                update_acc(curr_planet, planets, planet_num);
+        }
+        }
 
     for (int i = 0; i < planet_num; i++){
         Planet *curr_planet = planets + i;
-	if(!curr_planet->isStationary){
-        	update_pos_vel(curr_planet, deltaTime);
-		updatePlanetHistory(state->planets + i);
+        if(!curr_planet->isStationary){
+                update_pos_vel(curr_planet, deltaTime);
+            updatePlanetHistory(state->planets + i);
 	}
 
-        // printf("%f,%f,%f",plan_list[i].velocity.x, plan_list[i].velocity.y, plan_list[i].velocity.z);
-
-        // checks if two planets are colliding
-        for (int j = i; j < planet_num; j++){
-            float min_dist = curr_planet -> radius + planets[j].radius;
-            if (Vector3Distance(curr_planet -> position, planets[j].position) <= min_dist){
-                collision(curr_planet, planets + j, e);
-            }
+    // checks if two planets are colliding
+    for (int j = i; j < planet_num; j++){
+        float min_dist = curr_planet -> radius + planets[j].radius;
+        if (Vector3Distance(curr_planet -> position, planets[j].position) <= min_dist){
+            collision(curr_planet, planets + j, e);
         }
+    }
 	}
     state->planets = planets;
 }

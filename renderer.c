@@ -2,7 +2,7 @@
 #include <raylib.h>
 #include <raymath.h>
 #include "./include/renderer.h"
-#include "rlgl.h"
+#include <rlgl.h>
 
 void drawTrail(Planet *planet){
           for(int i = 0; i < TRAIL_SIZE - 1; i++){
@@ -96,7 +96,6 @@ void render(SimState *state){
     ClearBackground(BLACK);
 
     cam_update(state);
-
 
     rlSetClipPlanes(0.01f,100000.0f);
     BeginMode3D(state->camera);

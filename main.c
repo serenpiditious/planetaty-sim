@@ -11,7 +11,7 @@
 
 #include <raylib.h>
 #include <raymath.h>
-#include "rlgl.h"
+#include <rlgl.h>
 
 #include "./include/simulation.h"
 #include "./include/renderer.h"
@@ -48,7 +48,7 @@ int main(){
                   .radius = 20.0f,
                   .trailColor = WHITE,
                   .history = {0},
-		  .isStationary = 1,
+		  .isStationary = 0,
                   .planetColor = MAROON,
                   .mass = 100000};
 	
@@ -78,9 +78,9 @@ int main(){
 	
 	while (!WindowShouldClose()){
 		state.deltaTime = GetFrameTime();
-		SetMousePosition(WIN_WIDTH / 2, WIN_HEIGHT / 2);
 
 		physics(&state, E);
 		render(&state);
+                SetMousePosition(WIN_WIDTH / 2, WIN_HEIGHT / 2);
 	}
 }

@@ -2,6 +2,7 @@
 #include <raylib.h>
 #include <raymath.h>
 #include "./include/renderer.h"
+#include "rlgl.h"
 
 void drawTrail(Planet *planet){
           for(int i = 0; i < TRAIL_SIZE - 1; i++){
@@ -97,10 +98,11 @@ void render(SimState *state){
     cam_update(state);
 
 
+    rlSetClipPlanes(0.01f,100000.0f);
     BeginMode3D(state->camera);
         Planet *planet = state->planets;
         for (int i = 0; i < state->planet_num; i++){
-            DrawSphereWires(planet->position, planet->radius, 23, 23, RED);
+            DrawSphereWires(planet->position, planet->radius, 17, 17, state->planets[i].planetColor);
             drawTrail(state->planets + i);
             planet += 1;
         }

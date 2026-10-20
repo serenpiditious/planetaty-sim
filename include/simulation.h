@@ -15,6 +15,8 @@ typedef struct{
           Color trailColor;
           Color planetColor;
           Vector3 history[TRAIL_SIZE];
+	  // using integer as boolean
+	  int isStationary;
   } Planet;
 
 typedef struct{

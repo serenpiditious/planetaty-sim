@@ -11,6 +11,7 @@
 
 #include <raylib.h>
 #include <raymath.h>
+#include "rlgl.h"
 
 #include "./include/simulation.h"
 #include "./include/renderer.h"
@@ -26,26 +27,29 @@ int main(){
                   .acceleration = {0.0f, 0.0f, 0.0f},
                   .radius = 20.0f,
                   .mass = 10000,
-                  .trailColor = RED,
+                  .trailColor = GREEN,
+		  .isStationary = 0,
                   .history = {0},
-                  .planetColor = GREEN};
-
+                  .planetColor = BLUE};
 
           Planet jupiter = {.position = {250.0f, 0.0f, 0.0f},
                   .velocity = {0.0f, 0.0f, 0.0f},
                   .acceleration = {0.0f, 0.0f, 0.0f},
                   .radius = 60.0f,
                   .trailColor = RED,
-                  .planetColor = GREEN,
+                  .planetColor = ORANGE,
+		  .isStationary = 0,
                   .history = {0},
                   .mass = 15000};
+
           Planet eridani = {.position = {0.0f, 300.0f, 0.0f},
                   .velocity = {0.0f, 0.0f, 0.0f},
                   .acceleration = {0.0f, 0.0f, 0.0f},
                   .radius = 20.0f,
-                  .trailColor = RED,
+                  .trailColor = WHITE,
                   .history = {0},
-                  .planetColor = GREEN,
+		  .isStationary = 1,
+                  .planetColor = MAROON,
                   .mass = 100000};
 	
 	int planet_num = 3;
@@ -70,6 +74,8 @@ int main(){
 	state.planet_num = planet_num;
 	state.planets = planets;
 	state.camera = camera;
+	
+	
 	while (!WindowShouldClose()){
 		state.deltaTime = GetFrameTime();
 		SetMousePosition(WIN_WIDTH / 2, WIN_HEIGHT / 2);

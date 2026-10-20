@@ -74,14 +74,18 @@ void physics(SimState *state, float e){
 
     for (int i = 0; i < state->planet_num; i++){
         Planet *curr_planet = planets + i;
-        update_acc(curr_planet, planets, planet_num);
+	if(!curr_planet->isStationary){
+        	update_acc(curr_planet, planets, planet_num);
+	}
         // printf("%f,%f,%f",plan_list[i].velocity.x, plan_list[i].velocity.y, plan_list[i].velocity.z);
     }
 
     for (int i = 0; i < planet_num; i++){
         Planet *curr_planet = planets + i;
-        update_pos_vel(curr_planet, deltaTime);
+	if(!curr_planet->isStationary){
+        	update_pos_vel(curr_planet, deltaTime);
 		updatePlanetHistory(state->planets + i);
+	}
 
         // printf("%f,%f,%f",plan_list[i].velocity.x, plan_list[i].velocity.y, plan_list[i].velocity.z);
 

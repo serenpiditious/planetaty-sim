@@ -2,6 +2,13 @@
 #include <raymath.h>
 #include "./include/simulation.h"
 
+
+void updatePlanetHistory(Planet *planet){
+        for (int i = 1 ; i< TRAIL_SIZE;i++){
+                planet->history[i+1] = planet->history[i];
+        }
+        planet->history[0] = planet->position;
+}
 // scales vector dir by scale
 Vector3 scaleAndAdd(Vector3 vec, Vector3 dir, float scale){
     return Vector3Add(vec, Vector3Scale(dir, scale));
@@ -75,6 +82,8 @@ void physics(SimState *state, float e){
     for (int i = 0; i < planet_num; i++){
         Planet *curr_planet = planets + i;
         update_pos_vel(curr_planet, deltaTime);
+		updatePlanetHistory(state->planets + i);
+
         // printf("%f,%f,%f",plan_list[i].velocity.x, plan_list[i].velocity.y, plan_list[i].velocity.z);
 
         // checks if two planets are colliding

@@ -4,6 +4,7 @@
 #include <raylib.h>
 
 #define G 200
+#define TRAIL_SIZE 960
 
 typedef struct{
           Vector3 position;

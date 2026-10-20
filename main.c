@@ -48,7 +48,7 @@ int main(){
                   .planetColor = GREEN,
                   .mass = 100000};
 	
-	int planet_num = 1;
+	int planet_num = 3;
 	Planet planets[] = {earth, jupiter, eridani};
 
 	Vector3 move_speed = {0.5f, 0.5f, 0.5f};

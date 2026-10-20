@@ -4,8 +4,8 @@
 #include "./include/renderer.h"
 
 void drawTrail(Planet *planet){
-          for(int i=0; i<TRAIL_SIZE; i++){
-                 DrawLine3D(planet->history[i],planet->history[i+1],planet->trailColor);
+          for(int i = 0; i < TRAIL_SIZE - 1; i++){
+                 DrawLine3D(planet->history[i], planet->history[i+1], planet->trailColor);
           }
 
   }

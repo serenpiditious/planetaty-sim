@@ -1,12 +1,10 @@
 #include <raylib.h>
 #include <raymath.h>
 #include "./include/simulation.h"
-#define TRAIL_SIZE 500
-
 
 void updatePlanetHistory(Planet *planet){
-        for (int i = 1 ; i< TRAIL_SIZE;i++){
-                planet->history[i+1] = planet->history[i];
+        for (int i = TRAIL_SIZE - 1 ; i > 0 ;i--){
+                planet->history[i] = planet->history[i - 1];
         }
         planet->history[0] = planet->position;
 }

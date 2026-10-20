@@ -3,6 +3,12 @@
 #include <raymath.h>
 #include "./include/renderer.h"
 
+void drawTrail(Planet *planet){
+          for(int i=0; i<TRAIL_SIZE; i++){
+                 DrawLine3D(planet->history[i],planet->history[i+1],planet->trailColor);
+          }
+
+  }
 //finds the closest one of cardinal direction and up and down
 Vector3 closest_cardinal_dir(Vector3 unit_dir){
     unit_dir = Vector3Normalize(unit_dir);
@@ -95,6 +101,7 @@ void render(SimState *state){
         Planet *planet = state->planets;
         for (int i = 0; i < state->planet_num; i++){
             DrawSphereWires(planet->position, planet->radius, 23, 23, RED);
+            drawTrail(state->planets + i);
             planet += 1;
         }
     EndMode3D();

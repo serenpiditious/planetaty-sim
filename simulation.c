@@ -85,4 +85,5 @@ void physics(SimState *state, float e){
             }
         }
 	}
+    state->planets = planets;
 }

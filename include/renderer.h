@@ -3,8 +3,8 @@
 #include <raylib.h>
 #include "simulation.h"
 
-#define DELTA_THETA 0.09f
-#define DELTA_POS 0.09f
+#define DELTA_THETA 180.0f
+#define DELTA_POS 250.0f
 
-void cam_update(Camera3D *camera);
+void cam_update(SimState *state);
 void render(SimState *state);

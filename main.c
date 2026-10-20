@@ -10,6 +10,8 @@
 #include <math.h>
 
 #include <raylib.h>
+#include <raymath.h>
+
 #include "./include/simulation.h"
 #include "./include/renderer.h"
 
@@ -41,7 +43,7 @@ int main(){
 	Vector3 move_speed = {0.5f, 0.5f, 0.5f};
 
 	Camera3D camera = {
-		.position = (Vector3){ 0.0f, 0.0f, -50.0f },  // Camera position
+		.position = (Vector3){ 0.0f, 0.0f, -500.0f },  // Camera position
     	.target = (Vector3){0.0f, 0.0f, 0.0f},      // Camera looking at point
     	.up = (Vector3){ 0.0f, 1.0f, 0.0f },          // Camera up vector (rotation towards target)
     	.fovy = 45.0f,                                // Camera field-of-view Y
@@ -54,15 +56,12 @@ int main(){
 	SetTargetFPS(480);
 
 	SimState state;
+	state.planet_num = planet_num;
+	state.planets = planets;
+	state.camera = camera;
 	while (!WindowShouldClose()){
-		float deltaTime = GetFrameTime();
-		cam_update(&camera);
+		state.deltaTime = GetFrameTime();
 		SetMousePosition(WIN_WIDTH / 2, WIN_HEIGHT / 2);
-
-		state.camera = camera;
-		state.planets = planets;
-		state.deltaTime = deltaTime;
-		state.planet_num = planet_num;
 
 		physics(&state, E);
 		render(&state);

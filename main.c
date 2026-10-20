@@ -21,21 +21,32 @@
 #define E 1
 
 int main(){
-	Planet earth = {.position = {0.0f, 0.0f, 0.0f},
-		.velocity = {0.0f, 0.0f, 0.0f},
-		.acceleration = {0.0f, 0.0f, 0.0f},
-		.radius = 20.0f,
-		.mass = 10000};
-	Planet jupiter = {.position = {250.0f, 0.0f, 0.0f},
-		.velocity = {0.0f, 0.0f, 0.0f},
-		.acceleration = {0.0f, 0.0f, 0.0f},
-		.radius = 60.0f,
-		.mass = 15000};
-	Planet eridani = {.position = {0.0f, 300.0f, 0.0f},
-		.velocity = {0.0f, 0.0f, 0.0f},
-		.acceleration = {0.0f, 0.0f, 0.0f},
-		.radius = 20.0f,
-		.mass = 100000};
+       Planet earth = {.position = {0.0f, 0.0f, 0.0f},
+                  .velocity = {0.0f, 0.0f, 12.0f},
+                  .acceleration = {0.0f, 0.0f, 0.0f},
+                  .radius = 20.0f,
+                  .mass = 10000,
+                  .trailColor = RED,
+                  .history = {0},
+                  .planetColor = GREEN};
+
+
+          Planet jupiter = {.position = {250.0f, 0.0f, 0.0f},
+                  .velocity = {0.0f, 0.0f, 0.0f},
+                  .acceleration = {0.0f, 0.0f, 0.0f},
+                  .radius = 60.0f,
+                  .trailColor = RED,
+                  .planetColor = GREEN,
+                  .history = {0},
+                  .mass = 15000};
+          Planet eridani = {.position = {0.0f, 300.0f, 0.0f},
+                  .velocity = {0.0f, 0.0f, 0.0f},
+                  .acceleration = {0.0f, 0.0f, 0.0f},
+                  .radius = 20.0f,
+                  .trailColor = RED,
+                  .history = {0},
+                  .planetColor = GREEN,
+                  .mass = 100000};
 	
 	int planet_num = 1;
 	Planet planets[] = {earth, jupiter, eridani};

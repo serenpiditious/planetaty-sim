@@ -6,12 +6,15 @@
 #define G 200
 
 typedef struct{
-	Vector3 position;
-	Vector3 velocity;
-	Vector3 acceleration;
-	float radius;
-	float mass;
-} Planet;
+          Vector3 position;
+          Vector3 velocity;
+          Vector3 acceleration;
+          float radius;
+          float mass;
+          Color trailColor;
+          Color planetColor;
+          Vector3 history[TRAIL_SIZE];
+  } Planet;
 
 typedef struct{
     int planet_num;

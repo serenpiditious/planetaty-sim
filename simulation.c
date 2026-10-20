@@ -1,6 +1,7 @@
 #include <raylib.h>
 #include <raymath.h>
 #include "./include/simulation.h"
+#define TRAIL_SIZE 500
 
 
 void updatePlanetHistory(Planet *planet){

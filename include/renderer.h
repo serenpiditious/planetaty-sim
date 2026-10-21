@@ -3,6 +3,8 @@
 #include <raylib.h>
 #include <rlgl.h>
 #include "simulation.h"
+//#include "gui.h"
+
 
 #define DELTA_THETA 180.0f
 #define DELTA_POS 1000.0f

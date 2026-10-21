@@ -87,7 +87,7 @@ void physics(SimState *state, float e){
         if(!curr_planet->isStationary){
                 update_acc(curr_planet, planets, planet_num);
         }
-        }
+    }
 
     for (int i = 0; i < planet_num; i++){
         Planet *curr_planet = planets + i;

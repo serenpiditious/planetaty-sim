@@ -16,7 +16,7 @@
 #include "./include/simulation.h"
 #include "./include/renderer.h"
 #include "solar_system.c"
-
+#include "./include/raygui.h"
 #define WIN_WIDTH 1920
 #define WIN_HEIGHT 1080
 // coefficient of restitution
@@ -55,16 +55,27 @@ int main(){
 	state.planet_num = planet_num;
 	state.planets = planets;
 	state.camera = camera;
+	state.isPaused = 0;
+
+	GuiSetStyle(DEFAULT,TEXT_SIZE,30);
+	GuiSetStyle(DEFAULT, TEXT_COLOR_NORMAL, ColorToInt(GREEN));
+	GuiSetStyle(DEFAULT, TEXT_COLOR_FOCUSED, ColorToInt(WHITE));
+
 	
 	int mouse_update = 0;
 	while (!WindowShouldClose()){
 		state.deltaTime = GetFrameTime();
-
-		physics(&state, E);
-		render(&state);
-		if (mouse_update % 8 == 0){
-			SetMousePosition(WIN_WIDTH / 2, WIN_HEIGHT / 2);
+		
+		if(!state.isPaused){
+			physics(&state, E);
+			if (mouse_update % 8 == 0){
+				SetMousePosition(WIN_WIDTH / 2, WIN_HEIGHT / 2);
+			}
+			mouse_update += 1;
 		}
-		mouse_update += 1;
+		if(IsKeyPressed(KEY_P)) state.isPaused = !state.isPaused;
+
+		render(&state);
+
 	}
 }

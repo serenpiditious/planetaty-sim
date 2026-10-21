@@ -25,6 +25,8 @@ typedef struct{
     Planet *planets;
     float deltaTime;
     Camera3D camera;
+    int isPaused;
+    int activePlanetIndex;
 } SimState;
 
 Vector3 scaleAndAdd(Vector3 vec, Vector3 dir, float scale);

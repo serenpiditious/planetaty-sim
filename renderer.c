@@ -5,13 +5,13 @@
 #include <rlgl.h>
 #define RAYGUI_IMPLEMENTATION
 #include "./include/raygui.h"
+
 void drawTrail(Planet *planet){
 	for(int i = 0; i < TRAIL_SIZE - 1; i++){
 		DrawLine3D(planet->history[i], planet->history[i+1], planet->trailColor);
 	}
 
 }
-
 // moves camera
 void cam_update(SimState *state){
 	Camera3D *camera = &(state->camera);
@@ -74,12 +74,11 @@ void cam_update(SimState *state){
 
 // renders all planets
 void render(SimState *state){
-	BeginDrawing();
-	ClearBackground(BLACK);
-
 	if(!state->isPaused){
 		cam_update(state);
 	}
+	BeginDrawing();
+	ClearBackground(BLACK);
 
 	rlSetClipPlanes(0.01f,100000.0f);
 	BeginMode3D(state->camera);
@@ -103,7 +102,7 @@ void render(SimState *state){
 
 	DrawCircleV(mousePos, 5, RED); 
 
-
+	//gui starts here
 	if(state->isPaused){
 		EnableCursor();
 		ShowCursor();
@@ -135,7 +134,6 @@ void render(SimState *state){
 
 			if (GuiLabelButton((Rectangle){ buttonX, currentY, buttonWidth, buttonHeight }, buttonLabels[i])) 
 			{
-				// When clicked, update the active tracker state to this button's index
 				state->activePlanetIndex = i;
 				printf("%d",state->activePlanetIndex);
 				//printf("Button %d is now active!\n", i + 1);

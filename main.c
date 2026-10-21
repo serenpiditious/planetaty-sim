@@ -48,7 +48,7 @@ int main(){
 
 	InitWindow(WIN_WIDTH, WIN_HEIGHT, "Planetary Sim");
 
-	HideCursor();
+	DisableCursor();
 	SetTargetFPS(480);
 
 	SimState state;
@@ -62,18 +62,23 @@ int main(){
 	GuiSetStyle(DEFAULT, TEXT_COLOR_FOCUSED, ColorToInt(WHITE));
 
 	
-	int mouse_update = 0;
 	while (!WindowShouldClose()){
 		state.deltaTime = GetFrameTime();
 		
 		if(!state.isPaused){
 			physics(&state, E);
-			if (mouse_update % 8 == 0){
-				SetMousePosition(WIN_WIDTH / 2, WIN_HEIGHT / 2);
-			}
-			mouse_update += 1;
+			//if (mouse_update % 2 == 0){
+			//	SetMousePosition(WIN_WIDTH / 2, WIN_HEIGHT / 2);
+			//}
+			//mouse_update += 1;
+			//DisableCursor();
+			//HideCursor();
 		}
-		if(IsKeyPressed(KEY_P)) state.isPaused = !state.isPaused;
+		if(IsKeyPressed(KEY_P)){
+			state.isPaused = !state.isPaused;
+			if(IsCursorHidden()) EnableCursor();
+			else{ DisableCursor(); HideCursor();}
+		}
 
 		render(&state);
 

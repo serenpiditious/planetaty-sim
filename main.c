@@ -15,45 +15,26 @@
 
 #include "./include/simulation.h"
 #include "./include/renderer.h"
+#include "solar_system.c"
 
-#define WIN_WIDTH 1500
-#define WIN_HEIGHT 700
+#define WIN_WIDTH 1920
+#define WIN_HEIGHT 1080
 // coefficient of restitution
 #define E 1
 
 int main(){
-       Planet earth = {.position = {0.0f, 0.0f, 0.0f},
-                  .velocity = {0.0f, 0.0f, 12.0f},
-                  .acceleration = {0.0f, 0.0f, 0.0f},
-                  .radius = 20.0f,
-                  .mass = 10000,
-                  .trailColor = GREEN,
-		  .isStationary = 0,
-                  .history = {0},
-                  .planetColor = BLUE};
-
-          Planet jupiter = {.position = {250.0f, 0.0f, 0.0f},
-                  .velocity = {0.0f, 0.0f, 0.0f},
-                  .acceleration = {0.0f, 0.0f, 0.0f},
-                  .radius = 60.0f,
-                  .trailColor = RED,
-                  .planetColor = ORANGE,
-		  .isStationary = 0,
-                  .history = {0},
-                  .mass = 15000};
-
-          Planet eridani = {.position = {0.0f, 300.0f, 0.0f},
-                  .velocity = {0.0f, 0.0f, 0.0f},
-                  .acceleration = {0.0f, 0.0f, 0.0f},
-                  .radius = 20.0f,
-                  .trailColor = WHITE,
-                  .history = {0},
-		  .isStationary = 0,
-                  .planetColor = MAROON,
-                  .mass = 100000};
+        Planet eridani = {.position = {0.0f, 300.0f, 0.0f},
+                .velocity = {0.0f, 0.0f, 0.0f},
+                .acceleration = {0.0f, 0.0f, 0.0f},
+                .radius = 20.0f,
+                .trailColor = WHITE,
+                .history = {0},
+                .isStationary = 0,
+                .planetColor = MAROON,
+                .mass = 100000};
 	
-	int planet_num = 3;
-	Planet planets[] = {earth, jupiter, eridani};
+	int planet_num = 9;
+	Planet planets[] = {Sun, Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune};
 
 	Vector3 move_speed = {0.5f, 0.5f, 0.5f};
 
@@ -75,12 +56,15 @@ int main(){
 	state.planets = planets;
 	state.camera = camera;
 	
-	
+	int mouse_update = 0;
 	while (!WindowShouldClose()){
 		state.deltaTime = GetFrameTime();
 
 		physics(&state, E);
 		render(&state);
-                SetMousePosition(WIN_WIDTH / 2, WIN_HEIGHT / 2);
+		if (mouse_update % 8 == 0){
+			SetMousePosition(WIN_WIDTH / 2, WIN_HEIGHT / 2);
+		}
+		mouse_update += 1;
 	}
 }

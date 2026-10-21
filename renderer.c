@@ -10,29 +10,6 @@ void drawTrail(Planet *planet){
           }
 
   }
-//finds the closest one of cardinal direction and up and down
-Vector3 closest_cardinal_dir(Vector3 unit_dir){
-    unit_dir = Vector3Normalize(unit_dir);
-    Vector3 cardinal_dirs[] = {(Vector3) {0.0f, 1.0f, 0.0f}, 
-        (Vector3) {0.0f, -1.0f, 0.0f}, 
-        (Vector3) {1.0f, 0.0f, 0.0f},
-        (Vector3) {-1.0f, 0.0f, 0.0f},
-        (Vector3) {0.0f, 0.0f, 1.0f},
-        (Vector3) {0.0f, 0.0f, -1.0f}
-    };
-
-    float min_dist = 2;
-    float dist;
-    Vector3 min_vec = cardinal_dirs[0];
-    for (int i = 1; i < 6; i++){
-        dist = Vector3Distance(unit_dir, (cardinal_dirs[i]));
-        if (dist < min_dist){
-        min_dist = dist;
-        min_vec = cardinal_dirs[i];
-        }
-    }
-    return min_vec;
-}
 
 // moves camera
 void cam_update(SimState *state){
@@ -47,11 +24,15 @@ void cam_update(SimState *state){
     Vector3 cam_dir = Vector3Normalize(Vector3Subtract(camera->target, camera->position));
     Vector3 cam_right = Vector3CrossProduct(cam_dir, camera->up);
 
+    if (IsKeyDown(KEY_TAB)){
+        change_pos /= 10;
+    }
+
     del_theta = DELTA_THETA * DEG2RAD * state ->deltaTime;
-    if (IsKeyDown(KEY_UP) || GetMouseDelta().y > 0) pitch += del_theta;
-    if (IsKeyDown(KEY_DOWN) || GetMouseDelta().y < 0) pitch -= del_theta;
-    if (IsKeyDown(KEY_RIGHT) || GetMouseDelta().x < 0) yaw -= del_theta;
-    if (IsKeyDown(KEY_LEFT) || GetMouseDelta().x > 0) yaw += del_theta;
+    if (IsKeyDown(KEY_UP) || GetMouseDelta().y < 0) pitch += del_theta;
+    if (IsKeyDown(KEY_DOWN) || GetMouseDelta().y > 0) pitch -= del_theta;
+    if (IsKeyDown(KEY_RIGHT) || GetMouseDelta().x > 0) yaw -= del_theta;
+    if (IsKeyDown(KEY_LEFT) || GetMouseDelta().x < 0) yaw += del_theta;
     if (IsKeyDown(KEY_E)) roll += del_theta;
     if (IsKeyDown(KEY_Q)) roll -= del_theta;
 

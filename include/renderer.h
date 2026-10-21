@@ -5,7 +5,8 @@
 #include "simulation.h"
 
 #define DELTA_THETA 180.0f
-#define DELTA_POS 250.0f
+#define DELTA_POS 1000.0f
 
+void drawTrail(Planet *planet);
 void cam_update(SimState *state);
 void render(SimState *state);

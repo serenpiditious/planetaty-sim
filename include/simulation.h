@@ -3,9 +3,9 @@
 #include <math.h>
 #include <raylib.h>
 
-#define G 75
+#define G 100
 #define K 50 // repulsion b/w overlapping planets
-#define TRAIL_SIZE 960
+#define TRAIL_SIZE 10000
 
 typedef struct{
           Vector3 position;

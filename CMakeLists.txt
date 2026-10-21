@@ -6,7 +6,7 @@ set(CMAKE_C_STANDARD 99)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
 # 2. Tell CMake to strictly REQUIRE raylib
-find_package(raylib 5.5 CONFIG QUIET)
+find_package(raylib 6.0 CONFIG QUIET)
 
 if(NOT raylib_FOUND)
     include(FetchContent)
@@ -17,7 +17,7 @@ if(NOT raylib_FOUND)
     FetchContent_Declare(
         raylib
         GIT_REPOSITORY https://github.com/raysan5/raylib.git
-        GIT_TAG        5.5 # Or use "master" / a specific version tag
+        GIT_TAG        6.0 # Or use "master" / a specific version tag
     )
     FetchContent_MakeAvailable(raylib)
 endif()

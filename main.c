@@ -12,8 +12,12 @@
 
 #include "./include/simulation.h"
 #include "./include/renderer.h"
-#include "solar_system.h"
 #include "./include/raygui.h"
+
+#include "./examples/solar_system.h"
+#include "./examples/binary_star.h"
+#include "./examples/solar_system_moons.h"
+
 #define WIN_WIDTH 1920
 #define WIN_HEIGHT 1080
 // coefficient of restitution
@@ -23,9 +27,9 @@ int main(){
 	InitWindow(WIN_WIDTH, WIN_HEIGHT, "Planetary Sim");
 
 	DisableCursor();
-	SetTargetFPS(1000);
+	SetTargetFPS(200);
 
-	SimState state = solarsystem();
+	SimState state = solarsystem_moons();
 
 	for( int i = 0; i<state.planet_num; i++){
 		for(int j = 0; j<TRAIL_SIZE; j++){

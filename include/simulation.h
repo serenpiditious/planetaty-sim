@@ -18,6 +18,7 @@ typedef struct{
           Color planetColor;
           Vector3 history[TRAIL_SIZE];
 	  int HeadIndex; //head of the trail
+	  const char *label;
 	  // using integer as boolean
 	  int isStationary;
   } Planet;

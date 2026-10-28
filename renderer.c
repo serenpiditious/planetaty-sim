@@ -215,24 +215,19 @@ void render(SimState *state){
 	EndMode3D();
 	//gui here :D
 	
+		float startX = 150.0f;
+		float startY = 72.0f;
 	if(state->isPaused){
 
-		float startX = 200.0f;
-		float startY = 72.0f;
-		float verticalSpacing = 80.0f; 
+		float verticalSpacing = 55.0f; 
 
 		float squareSize = 20.0f;
 		float paddingBetween = 20.0f;  // Gap between the square and the text
 		float buttonWidth = 500.0f;
 		float buttonHeight = 36.0f;
 
-		const char* buttonLabels[9] = {
-			"Planet1", "Planet2", "Planet3", 
-			"Planet4", "Planet5", "Planet6", 
-			"Planet7", "Planet8", "Planet9"
-		};
 
-		for (int i = 0; i < 9; i++) 
+		for (int i = 0; i < state->planet_num; i++) 
 		{
 			float currentY = startY + (i * verticalSpacing);
 
@@ -242,7 +237,7 @@ void render(SimState *state){
 
 			float buttonX = startX + squareSize + paddingBetween;
 
-			if (GuiLabelButton((Rectangle){ buttonX, currentY, buttonWidth, buttonHeight }, buttonLabels[i])) 
+			if (GuiLabelButton((Rectangle){ buttonX, currentY, buttonWidth, buttonHeight }, state->planets[i].label)) 
 			{
 				state->cameraState = 1;
 				state->activePlanetIndex = i;
@@ -251,20 +246,19 @@ void render(SimState *state){
 			}
 		}
 	}
+	DrawText(TextFormat("%s", state->cameraState ? state->planets[state->activePlanetIndex].label : "FREE"), startX, 5, 36, GREEN);
+	DrawText(TextFormat("FPS:  %d", GetFPS()), 1700, 5, 16, GREEN);
+
 	EndTextureMode();
 	bloom_composite();              // sharp scene + glow to the screen
 	//some debug info
-	Vector2 mousePos = GetMousePosition();
-	bool isLeftClickPressed = IsMouseButtonPressed(MOUSE_BUTTON_LEFT);
-	bool isCursorHidden = IsCursorHidden();
+	//Vector2 mousePos = GetMousePosition();
+	//bool isLeftClickPressed = IsMouseButtonPressed(MOUSE_BUTTON_LEFT);
+	//bool isCursorHidden = IsCursorHidden();
 
-	DrawRectangle(0, 0, GetScreenWidth(), 25, Fade(BLACK, 0.6f));
 
-	DrawText(TextFormat("Mouse: X:%.0f Y:%.0f", mousePos.x, mousePos.y), 10, 5, 16, GREEN);
-	DrawText(TextFormat("Click: %s", isLeftClickPressed ? "YES" : "NO"), 220, 5, 16, GREEN);
-	DrawText(TextFormat("Cursor Hidden: %s", isCursorHidden ? "YES" : "NO"), 350, 5, 16, GREEN);
-	DrawText(TextFormat("CAMERA STATE:  %d", state->cameraState), 550, 5, 16, GREEN);
-	DrawText(TextFormat("FPS:  %d", GetFPS()), 800, 5, 16, GREEN);
+	//DrawText(TextFormat("Cursor Hidden: %s", isCursorHidden ? "YES" : "NO"), 350, 5, 16, GREEN);
+	//DrawText(TextFormat("CAMERA STATE:  %d", state->cameraState), 550, 5, 16, GREEN);
 	
 
 	//DrawCircleV(mousePos, 5, RED); 

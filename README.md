@@ -8,7 +8,6 @@ CONTROLS:
   - R - reset orientation
   - Tab - move slower
 
-UNITS:
-  - G = 2 u  
-  - 10 km = 1 u  
-  - 10 ^ 23 kg = 1 u  
+
+p for pause 
+f for freecam

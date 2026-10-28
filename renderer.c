@@ -2,19 +2,26 @@
 #include <raylib.h>
 #include <raymath.h>
 #include "./include/renderer.h"
+#include "include/simulation.h"
 #include <rlgl.h>
 #define RAYGUI_IMPLEMENTATION
 #include "./include/raygui.h"
+#define MOUSE_SENSITIVITY 0.0025f
+#define OFFSET_VECTOR (Vector3){0.0f,1.0f,0.0f}
+#define CAM_DIST 1.1f
 
+//draws a fucking trail
 void drawTrail(Planet *planet){
 	for(int i = 0; i < TRAIL_SIZE - 1; i++){
-		DrawLine3D(planet->history[i], planet->history[i+1], planet->trailColor);
+		DrawLine3D(planet->history[(planet->HeadIndex + i)%TRAIL_SIZE], planet->history[(planet->HeadIndex + i+1)%TRAIL_SIZE], planet->trailColor);
 	}
 
 }
 // moves camera
-void cam_update(SimState *state){
+void fps_cam(SimState *state){
 	Camera3D *camera = &(state->camera);
+
+	Vector2 mouseDelta = GetMouseDelta();
 
 	float del_theta;
 	float change_pos = DELTA_POS * state ->deltaTime;
@@ -25,15 +32,19 @@ void cam_update(SimState *state){
 	Vector3 cam_dir = Vector3Normalize(Vector3Subtract(camera->target, camera->position));
 	Vector3 cam_right = Vector3CrossProduct(cam_dir, camera->up);
 
+	yaw   -= mouseDelta.x * MOUSE_SENSITIVITY;
+	pitch -= mouseDelta.y * MOUSE_SENSITIVITY;
+	
+
 	if (IsKeyDown(KEY_TAB)){
 		change_pos /= 10;
 	}
 
 	del_theta = DELTA_THETA * DEG2RAD * state ->deltaTime;
-	if (IsKeyDown(KEY_UP) || GetMouseDelta().y < 0) pitch += del_theta;
-	if (IsKeyDown(KEY_DOWN) || GetMouseDelta().y > 0) pitch -= del_theta;
-	if (IsKeyDown(KEY_RIGHT) || GetMouseDelta().x > 0) yaw -= del_theta;
-	if (IsKeyDown(KEY_LEFT) || GetMouseDelta().x < 0) yaw += del_theta;
+	if (IsKeyDown(KEY_UP)) pitch += del_theta;
+	if (IsKeyDown(KEY_DOWN)) pitch -= del_theta;
+	if (IsKeyDown(KEY_RIGHT)) yaw -= del_theta;
+	if (IsKeyDown(KEY_LEFT)) yaw += del_theta;
 	if (IsKeyDown(KEY_E)) roll += del_theta;
 	if (IsKeyDown(KEY_Q)) roll -= del_theta;
 
@@ -72,10 +83,25 @@ void cam_update(SimState *state){
 	}
 }
 
+// camera targets the planet
+void target_cam(SimState *state){
+	Planet *planet = state->planets + state->activePlanetIndex;
+	Vector3 relPos = Vector3Scale(Vector3Add(Vector3Normalize(planet->position), OFFSET_VECTOR), planet->radius * 7);
+	state->camera.position = Vector3Add(relPos,planet->position);
+	//Vector3Add(Vector3Scale(OFFSET_VECTOR, planet->radius), planet->position)
+	state->camera.target = planet->position;
+	state->camera.up = Vector3Add(Vector3Normalize(planet->velocity),OFFSET_VECTOR);
+}
+
 // renders all planets
 void render(SimState *state){
-	if(!state->isPaused){
-		cam_update(state);
+	if(!state->isPaused && state->cameraState==0){
+		fps_cam(state);
+	}else if (state->cameraState==1){
+		target_cam(state);
+	}
+	if(IsKeyPressed(KEY_F)){
+		state->cameraState = 0;
 	}
 	BeginDrawing();
 	ClearBackground(BLACK);
@@ -99,13 +125,14 @@ void render(SimState *state){
 	DrawText(TextFormat("Mouse: X:%.0f Y:%.0f", mousePos.x, mousePos.y), 10, 5, 16, GREEN);
 	DrawText(TextFormat("Click: %s", isLeftClickPressed ? "YES" : "NO"), 220, 5, 16, GREEN);
 	DrawText(TextFormat("Cursor Hidden: %s", isCursorHidden ? "YES" : "NO"), 350, 5, 16, GREEN);
+	DrawText(TextFormat("CAMERA STATE:  %d", state->cameraState), 550, 5, 16, GREEN);
+	DrawText(TextFormat("FPS:  %d", GetFPS()), 800, 5, 16, GREEN);
+	
 
 	DrawCircleV(mousePos, 5, RED); 
 
 	//gui starts here
 	if(state->isPaused){
-		EnableCursor();
-		ShowCursor();
 
 		float startX = 200.0f;
 		float startY = 72.0f;
@@ -114,12 +141,12 @@ void render(SimState *state){
 		float squareSize = 20.0f;
 		float paddingBetween = 20.0f;  // Gap between the square and the text
 		float buttonWidth = 500.0f;
-		float buttonHeight = 20.0f;
+		float buttonHeight = 36.0f;
 
 		const char* buttonLabels[9] = {
-			"Planet1", "Planet2", "Planet3", 
-			"Planet4", "Planet5", "Planet6", 
-			"Planet7", "Planet8", "Planet9"
+			"SUN", "MERCURY", "VENUS", 
+			"erth", "MARS", "JUPITER", 
+			"SATRUN", "UR ANUS", "NEPCHUNE"
 		};
 
 		for (int i = 0; i < 9; i++) 
@@ -134,6 +161,7 @@ void render(SimState *state){
 
 			if (GuiLabelButton((Rectangle){ buttonX, currentY, buttonWidth, buttonHeight }, buttonLabels[i])) 
 			{
+				state->cameraState = 1;
 				state->activePlanetIndex = i;
 				printf("%d",state->activePlanetIndex);
 				//printf("Button %d is now active!\n", i + 1);

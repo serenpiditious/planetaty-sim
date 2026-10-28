@@ -5,7 +5,8 @@
 
 #define G 100
 #define K 50 // repulsion b/w overlapping planets
-#define TRAIL_SIZE 10000
+#define TRAIL_SIZE 500
+
 
 typedef struct{
           Vector3 position;
@@ -16,6 +17,7 @@ typedef struct{
           Color trailColor;
           Color planetColor;
           Vector3 history[TRAIL_SIZE];
+	  int HeadIndex; //head of the trail
 	  // using integer as boolean
 	  int isStationary;
   } Planet;
@@ -25,6 +27,7 @@ typedef struct{
     Planet *planets;
     float deltaTime;
     Camera3D camera;
+    int cameraState;
     int isPaused;
     int activePlanetIndex;
 } SimState;

@@ -1,12 +1,16 @@
 #include <raylib.h>
 #include <raymath.h>
+#include <wctype.h>
 #include "./include/simulation.h"
 
 void updatePlanetHistory(Planet *planet){
-        for (int i = TRAIL_SIZE - 1 ; i > 0 ;i--){
-                planet->history[i] = planet->history[i - 1];
-        }
-        planet->history[0] = planet->position;
+        //for (int i = TRAIL_SIZE - 1 ; i > 0 ;i--){
+         //       planet->history[i] = planet->history[i - 1];
+        //}
+	if(Vector3Distance(planet->position,planet->history[(planet->HeadIndex + TRAIL_SIZE-1)%TRAIL_SIZE])>50){
+		planet->history[planet->HeadIndex] = planet->position;
+		planet->HeadIndex = (planet->HeadIndex + 1)%TRAIL_SIZE;
+	}
 }
 // scales vector dir by scale
 Vector3 scaleAndAdd(Vector3 vec, Vector3 dir, float scale){
@@ -20,7 +24,7 @@ float collision_vel(float u1, float u2, float mass1, float mass2, float e){
 
 // calculates vector acceleration of curr_planet
 void update_acc(Planet* curr_planet, Planet* planets, int planet_num){
-    Planet planet;
+    Planet *planet;
     Vector3 dir_vector;
     float dist;
     float min_dist;
@@ -28,18 +32,18 @@ void update_acc(Planet* curr_planet, Planet* planets, int planet_num){
     Vector3 acc = (Vector3) {0.0f, 0.0f, 0.0f};
     for (int i = 0; i < planet_num; i++){
         if (curr_planet != planets + i){
-            planet = planets[i];
+            planet = planets + i;
             // points from curr_planet to planet
-            dir_vector = Vector3Subtract(planet.position, curr_planet -> position);
+            dir_vector = Vector3Subtract(planet->position, curr_planet -> position);
             dist = Vector3Length(dir_vector);
-            min_dist = curr_planet->radius + planet.radius;
+            min_dist = curr_planet->radius + planet->radius;
             if (min_dist > dist){
                 force = K * (dist - min_dist);
             }
             else if (min_dist == dist){
                 force = 0;
             } else{
-                force = (G * planet.mass) / (dist * dist);
+                force = (G * planet->mass) / (dist * dist);
             }
             acc = scaleAndAdd(acc, Vector3Normalize(dir_vector), force);
         }
@@ -57,8 +61,6 @@ void update_pos_vel(Planet* planet, float deltaTime){
 void collision(Planet *pro, Planet *bono, float e){
     // points from pro to bono
     Vector3 unit_dir = Vector3Normalize(Vector3Subtract(bono->position, pro->position));
-    float min_dist = pro->radius + bono->radius;
-    // bono->position = scaleAndAdd(pro->position, unit_dir, pro->radius + bono->radius);
 
     // velocity along normal
     float u_pro = Vector3DotProduct(pro->velocity, unit_dir);
@@ -92,8 +94,8 @@ void physics(SimState *state, float e){
     for (int i = 0; i < planet_num; i++){
         Planet *curr_planet = planets + i;
         if(!curr_planet->isStationary){
-                update_pos_vel(curr_planet, deltaTime);
-            updatePlanetHistory(state->planets + i);
+		update_pos_vel(curr_planet, deltaTime);
+		updatePlanetHistory(state->planets + i);
 	}
 
     // checks if two planets are colliding

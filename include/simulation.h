@@ -5,7 +5,7 @@
 
 #define G 100
 #define K 50 // repulsion b/w overlapping planets
-#define TRAIL_SIZE 500
+#define TRAIL_SIZE 1000
 
 
 typedef struct{

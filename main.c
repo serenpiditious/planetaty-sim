@@ -12,7 +12,7 @@
 
 #include "./include/simulation.h"
 #include "./include/renderer.h"
-#include "solar_system.c"
+#include "solar_system.h"
 #include "./include/raygui.h"
 #define WIN_WIDTH 1920
 #define WIN_HEIGHT 1080
@@ -20,31 +20,12 @@
 #define E 1
 
 int main(){
-
-	int planet_num = 9;
-	Planet planets[] = {Sun, Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune};
-
-	Vector3 move_speed = {0.5f, 0.5f, 0.5f};
-
-	Camera3D camera = {
-		.position = (Vector3){ 0.0f, 0.0f, -500.0f },  // Camera position
-		.target = (Vector3){0.0f, 0.0f, 0.0f},      // Camera looking at point
-		.up = (Vector3){ 0.0f, 1.0f, 0.0f },          // Camera up vector (rotation towards target)
-		.fovy = 45.0f,                                // Camera field-of-view Y
-		.projection = CAMERA_PERSPECTIVE
-	};
-
 	InitWindow(WIN_WIDTH, WIN_HEIGHT, "Planetary Sim");
 
 	DisableCursor();
 	SetTargetFPS(1000);
 
-	SimState state;
-	state.planet_num = planet_num;
-	state.planets = planets;
-	state.camera = camera;
-	state.isPaused = 0;
-	state.cameraState = 0;
+	SimState state = solarsystem();
 
 	for( int i = 0; i<state.planet_num; i++){
 		for(int j = 0; j<TRAIL_SIZE; j++){
